@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Tareas</title>
+</head>
+<body>
+    <h1>Tareas</h1>
+    <ul>
+        {% for tarea in tareas %}
+            <li>
+                <strong>{{ tarea.titulo }}</strong> - 
+                {% if tarea.completada %} ✅ Completada {% else %} ⏳ Pendiente {% endif %}
+                &nbsp;|&nbsp;
+                <a href="{% url 'eliminar_tarea' tarea.id %}" style="color:red;">Eliminar</a>
+            </li>
+        {% empty %}
+            <li>No hay tareas aún.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
