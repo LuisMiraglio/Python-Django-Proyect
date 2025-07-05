@@ -1,0 +1,20 @@
+# Entorno virtual
+env/
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Configuración de VS Code
+.vscode/
+
+# Base de datos SQLite
+db.sqlite3
+
+# Variables de entorno
+.env
