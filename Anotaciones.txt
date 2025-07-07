@@ -1,0 +1,14 @@
+env\Scripts\activate
+
+Esto para agregar los cambios que se realizan en la pc
+git add .
+git commit -m "Cambios desde casa"
+git push
+
+Esto cada vez que voy a arrancar en la pc nueva, me trae todos los cambios realizados en la otra
+git pull
+
+
+SuperUsuario
+MiraglioLuis
+admin1234
