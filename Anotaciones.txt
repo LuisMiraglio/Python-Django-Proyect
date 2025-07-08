@@ -12,3 +12,5 @@ git pull
 SuperUsuario
 MiraglioLuis
 admin1234
+
+python manage.py runserver

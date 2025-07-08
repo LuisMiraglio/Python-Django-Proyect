@@ -1,15 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Crear Tarea</title>
-</head>
-<body>
-    <h1>Crear Nueva Tarea</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar</button>
-    </form>
-    <a href="{% url 'lista_tareas' %}">Volver a la lista</a>
-</body>
-</html>
+{% load form_tags %}
+{% extends 'base.html' %}
+
+{% block title %}Crear Nueva Tarea{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Crear Nueva Tarea</h2>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="id_titulo" class="form-label">Título</label>
+    {{ form.titulo|add_class:"form-control" }}
+  </div>
+  <div class="mb-3">
+    <label for="id_descripcion" class="form-label">Descripción</label>
+    {{ form.descripcion|add_class:"form-control" }}
+  </div>
+  <div class="form-check mb-3">
+    {{ form.completada }}
+    <label class="form-check-label" for="id_completada">Completada</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+  <a href="{% url 'lista_tareas' %}" class="btn btn-secondary">Volver a la lista</a>
+</form>
+{% endblock %}

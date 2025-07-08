@@ -1,29 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Tareas</title>
-</head>
-<body>
-    <h1>Tareas</h1>
-    <ul>
-        {% for tarea in tareas %}
-            <li>
-                <strong>{{ tarea.titulo }}</strong> - 
-                {% if tarea.completada %}
-                    ✅ Completada
-                    &nbsp;|&nbsp;
-                    <a href="{% url 'cambiar_estado' tarea.id %}" style="color:orange;">Marcar como pendiente</a>
-                {% else %}
-                    ⏳ Pendiente
-                    &nbsp;|&nbsp;
-                    <a href="{% url 'cambiar_estado' tarea.id %}" style="color:green;">Marcar como completada</a>
-                {% endif %}
-                &nbsp;|&nbsp;
-                <a href="{% url 'eliminar_tarea' tarea.id %}" style="color:red;">Eliminar</a>
-            </li>
-        {% empty %}
-            <li>No hay tareas aún.</li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Lista de Tareas{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">📝 Lista de Tareas</h1>
+
+<a href="{% url 'crear_tarea' %}" class="btn btn-success mb-3">➕ Nueva Tarea</a>
+
+<ul class="list-group">
+  {% for tarea in tareas %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong>{{ tarea.titulo }}</strong> - 
+        {% if tarea.completada %}
+          <span class="badge bg-success">Completada</span>
+        {% else %}
+          <span class="badge bg-warning text-dark">Pendiente</span>
+        {% endif %}
+      </div>
+      <div>
+        {% if tarea.completada %}
+          <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-warning btn-sm">Marcar como pendiente</a>
+        {% else %}
+          <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-success btn-sm">Marcar como completada</a>
+        {% endif %}
+        <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-danger btn-sm ms-2">Eliminar</a>
+      </div>
+    </li>
+  {% empty %}
+    <li class="list-group-item">No hay tareas aún.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
