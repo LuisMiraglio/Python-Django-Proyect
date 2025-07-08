@@ -14,3 +14,6 @@ MiraglioLuis
 admin1234
 
 python manage.py runserver
+
+Restaurar el proyecto a los ultimo cambios si todavia no se realizo un git add .
+git restore .
