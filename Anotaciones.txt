@@ -10,8 +10,12 @@ git pull
 
 
 SuperUsuario
-MiraglioLuis
+LuisAntonio
 admin1234
+
+Usuario Normal
+Luis-MiraglioLuis
+admin12345
 
 python manage.py runserver
 

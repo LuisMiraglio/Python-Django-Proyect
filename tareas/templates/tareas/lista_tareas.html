@@ -3,15 +3,17 @@
 {% block title %}Lista de Tareas{% endblock %}
 
 {% block content %}
-<h1 class="mb-4">📝 Lista de Tareas</h1>
-
-<a href="{% url 'crear_tarea' %}" class="btn btn-success mb-3">➕ Nueva Tarea</a>
+<h2 class="mb-4">📝 Lista de Tareas</h2>
 
 <ul class="list-group">
   {% for tarea in tareas %}
     <li class="list-group-item d-flex justify-content-between align-items-center">
       <div>
-        <strong>{{ tarea.titulo }}</strong> - 
+        <strong>{{ tarea.titulo }}</strong>
+        {% if tarea.fecha_vencimiento %}
+          <small class="text-muted ms-2">📅 Vence: {{ tarea.fecha_vencimiento }}</small>
+        {% endif %}
+        <br>
         {% if tarea.completada %}
           <span class="badge bg-success">Completada</span>
         {% else %}
@@ -24,6 +26,7 @@
         {% else %}
           <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-success btn-sm">Marcar como completada</a>
         {% endif %}
+        <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-sm btn-warning">Editar</a>
         <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-danger btn-sm ms-2">Eliminar</a>
       </div>
     </li>

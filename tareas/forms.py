@@ -4,4 +4,7 @@ from .models import Tarea
 class TareaForm(forms.ModelForm):
     class Meta:
         model = Tarea
-        fields = ['titulo', 'descripcion', 'completada']
+        fields = ['titulo', 'descripcion', 'fecha_vencimiento']
+        widgets = {
+            'fecha_vencimiento': forms.DateInput(attrs={'type': 'date'}),
+        }

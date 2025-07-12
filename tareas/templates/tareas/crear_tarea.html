@@ -8,18 +8,27 @@
 
 <form method="post">
   {% csrf_token %}
+  
   <div class="mb-3">
     <label for="id_titulo" class="form-label">Título</label>
     {{ form.titulo|add_class:"form-control" }}
   </div>
+
   <div class="mb-3">
     <label for="id_descripcion" class="form-label">Descripción</label>
     {{ form.descripcion|add_class:"form-control" }}
   </div>
+
+  <div class="mb-3">
+    <label for="id_fecha_vencimiento" class="form-label">Fecha de Vencimiento</label>
+    {{ form.fecha_vencimiento|add_class:"form-control" }}
+  </div>
+
   <div class="form-check mb-3">
     {{ form.completada }}
     <label class="form-check-label" for="id_completada">Completada</label>
   </div>
+
   <button type="submit" class="btn btn-primary">Guardar</button>
   <a href="{% url 'lista_tareas' %}" class="btn btn-secondary">Volver a la lista</a>
 </form>
