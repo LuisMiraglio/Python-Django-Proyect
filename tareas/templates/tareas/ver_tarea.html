@@ -1,0 +1,49 @@
+{% extends 'tareas/base.html' %}
+
+{% block title %}Detalle de la Tarea{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📝 Detalle de la Tarea</h2>
+
+<div class="card shadow">
+  <div class="card-header bg-dark text-white">
+    <strong>{{ tarea.titulo }}</strong>
+  </div>
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      {% if tarea.fecha_vencimiento %}
+        <li class="list-group-item">
+          <strong>📅 Fecha de vencimiento:</strong> {{ tarea.fecha_vencimiento }}
+        </li>
+      {% endif %}
+
+      <li class="list-group-item">
+        <strong>📌 Prioridad:</strong>
+        {% if tarea.prioridad == 'alta' %}
+          <span class="badge bg-danger text-uppercase">Alta</span>
+        {% elif tarea.prioridad == 'media' %}
+          <span class="badge bg-warning text-dark text-uppercase">Media</span>
+        {% else %}
+          <span class="badge bg-secondary text-uppercase">Baja</span>
+        {% endif %}
+      </li>
+
+      <li class="list-group-item">
+        <strong>✅ Estado:</strong>
+        {% if tarea.completada %}
+          <span class="text-success">Completada</span>
+        {% else %}
+          <span class="text-warning">Pendiente</span>
+        {% endif %}
+      </li>
+
+      <li class="list-group-item">
+        <strong>📝 Descripción:</strong><br>
+        {{ tarea.descripcion|linebreaks }}
+      </li>
+    </ul>
+
+    <a href="{% url 'lista_tareas' %}" class="btn btn-secondary mt-4">⬅ Volver a la lista</a>
+  </div>
+</div>
+{% endblock %}

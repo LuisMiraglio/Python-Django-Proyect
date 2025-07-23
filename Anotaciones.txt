@@ -9,11 +9,11 @@ Esto cada vez que voy a arrancar en la pc nueva, me trae todos los cambios reali
 git pull
 
 
-SuperUsuario
+SuperUsuario pc del trabajo
 LuisAntonio
 admin1234
 
-Usuario Normal
+Usuario Normal pc del trabajo
 Luis-MiraglioLuis
 admin12345
 

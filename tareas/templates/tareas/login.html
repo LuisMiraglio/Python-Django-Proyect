@@ -1,19 +1,138 @@
 {% extends 'tareas/base.html' %}
+
 {% block title %}Iniciar Sesión{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">🔐 Iniciar Sesión</h2>
+<style>
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+  }
 
-<form method="post">
-  {% csrf_token %}
-  <div class="mb-3">
-    <label for="username" class="form-label">Usuario</label>
-    <input type="text" name="username" id="username" class="form-control" required>
+  .login-wrapper {
+    position: relative;
+    width: 800px;
+    height: 400px;
+    background: #fff;
+    display: flex;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeSlideIn 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeSlideIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .form-container {
+    flex: 1;
+    padding: 40px;
+    transition: all 0.5s ease-in-out;
+    z-index: 2;
+    background-color: #f9f9f9;
+  }
+
+  .form-container h2 {
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+
+  .form-container input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  .form-container button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .form-container button:hover {
+    background-color: #0056b3;
+  }
+
+  .panel-container {
+    flex: 1;
+    background: linear-gradient(135deg, #4b6cb7, #182848);
+    color: white;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .panel-container h2 {
+    font-weight: bold;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+
+  .panel-container p {
+    font-size: 1rem;
+    max-width: 300px;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 768px) {
+    .login-wrapper {
+      flex-direction: column;
+      height: auto;
+    }
+
+    .panel-container {
+      display: none;
+    }
+  }
+</style>
+
+<div class="login-container">
+  <div class="login-wrapper">
+    <!-- Login form -->
+    <div class="form-container">
+      <h2>🔐 Iniciar Sesión</h2>
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show small" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+      <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Usuario" required autofocus>
+        <input type="password" name="password" placeholder="Contraseña" required>
+        <button type="submit">Iniciar sesión</button>
+      </form>
+    </div>
+
+    <!-- Panel derecho -->
+    <div class="panel-container">
+      <h2>Bienvenido a TaskFlow 🧠</h2>
+      <p>Gestioná tus tareas de forma simple, rápida y visual.</p>
+    </div>
   </div>
-  <div class="mb-3">
-    <label for="password" class="form-label">Contraseña</label>
-    <input type="password" name="password" id="password" class="form-control" required>
-  </div>
-  <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-</form>
+</div>
 {% endblock %}
