@@ -1,5 +1,5 @@
 {% extends 'tareas/base.html' %}
-
+{% block body_class %}bg-degrade{% endblock %}
 {% block title %}Iniciar Sesión{% endblock %}
 
 {% block content %}
@@ -20,29 +20,20 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     border-radius: 12px;
-    opacity: 0;
-    transform: translateY(30px);
-    animation: fadeSlideIn 0.8s ease-out forwards;
-  }
-
-  @keyframes fadeSlideIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 
   .form-container {
     flex: 1;
     padding: 40px;
-    transition: all 0.5s ease-in-out;
-    z-index: 2;
     background-color: #f9f9f9;
   }
 
   .form-container h2 {
     margin-bottom: 30px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
   .form-container input {
@@ -78,8 +69,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 1;
-    transition: all 0.5s ease-in-out;
   }
 
   .panel-container h2 {
@@ -95,6 +84,21 @@
     line-height: 1.4;
   }
 
+  .registro-footer {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .registro-footer a {
+    font-weight: bold;
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .registro-footer a:hover {
+    text-decoration: underline;
+  }
+
   @media (max-width: 768px) {
     .login-wrapper {
       flex-direction: column;
@@ -104,6 +108,10 @@
     .panel-container {
       display: none;
     }
+
+    .form-container {
+      padding: 30px 20px;
+    }
   }
 </style>
 
@@ -112,22 +120,16 @@
     <!-- Login form -->
     <div class="form-container">
       <h2>🔐 Iniciar Sesión</h2>
-      {% if messages %}
-        {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show small" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-          </div>
-        {% endfor %}
-      {% endif %}
       <form method="post">
         {% csrf_token %}
         <input type="text" name="username" placeholder="Usuario" required autofocus>
         <input type="password" name="password" placeholder="Contraseña" required>
         <button type="submit">Iniciar sesión</button>
       </form>
+      <div class="registro-footer">
+        <small>¿No tenés cuenta? <a href="{% url 'registro' %}">Registrate</a></small>
+      </div>
     </div>
-
     <!-- Panel derecho -->
     <div class="panel-container">
       <h2>Bienvenido a TaskFlow 🧠</h2>

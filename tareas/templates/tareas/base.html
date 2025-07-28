@@ -9,8 +9,12 @@
     body {
       display: flex;
       min-height: 100vh;
+      background: #f8f9fa;
     }
-
+    .bg-degrade {
+      background: linear-gradient(120deg, #26394d 0%, #41587b 60%, #5a99e6 100%) !important;
+      min-height: 100vh;
+    }
     .sidebar {
       background-color: #343a40;
       color: white;
@@ -20,11 +24,9 @@
       overflow-x: hidden;
       padding-top: 1rem;
     }
-
     .sidebar:hover {
       width: 200px;
     }
-
     .sidebar .nav-item {
       display: flex;
       align-items: center;
@@ -33,37 +35,45 @@
       text-decoration: none;
       color: white;
     }
-
     .sidebar .nav-item:hover {
       background-color: #495057;
     }
-
     .nav-label {
       margin-left: 10px;
       display: none;
     }
-
     .sidebar:hover .nav-label {
       display: inline;
     }
-
     .content {
       flex-grow: 1;
       padding: 2rem;
-      background-color: #f8f9fa;
+      background-color: transparent;
+      position: relative;
     }
-
     .nav-item.disabled {
       cursor: default;
       opacity: 0.7;
     }
-
     .nav-item.disabled:hover {
       background-color: inherit;
     }
+    #messages-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1050;
+      width: 90%;
+      max-width: 500px;
+    }
+    .fade-out {
+      opacity: 0;
+      transition: opacity 1s ease-out;
+    }
   </style>
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
 
   <!-- Barra lateral -->
   <div class="sidebar d-flex flex-column">
@@ -93,35 +103,24 @@
   <!-- Contenido principal -->
   <div class="content">
     {% if messages %}
-  <div id="messages-container" class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1050; width: 100%; max-width: 500px;">
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm rounded" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      <div id="messages-container">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm rounded" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+          </div>
+        {% endfor %}
       </div>
-    {% endfor %}
-  </div>
-
-  <script>
-    setTimeout(() => {
-      const alerts = document.querySelectorAll('#messages-container .alert');
-      alerts.forEach(alert => {
-        alert.classList.remove('show');
-        alert.classList.add('fade-out');
-        setTimeout(() => alert.remove(), 1000);  // Tiempo extra para completar la animación
-      });
-    }, 4000);
-  </script>
-
-  <style>
-    .fade-out {
-      opacity: 0;
-      transition: opacity 1s ease-out;
-    }
-  </style>
-{% endif %}
-
-
+      <script>
+        setTimeout(() => {
+          const alerts = document.querySelectorAll('#messages-container .alert');
+          alerts.forEach(alert => {
+            const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+            bsAlert.close();
+          });
+        }, 4000);
+      </script>
+    {% endif %}
 
     {% block content %}{% endblock %}
   </div>

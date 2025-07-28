@@ -14,41 +14,41 @@
     align-items: center;
     gap: 4px;
   }
-
   .tarea-btn:hover {
     transform: scale(1.05);
     opacity: 0.9;
   }
-
   .tarea-btn-group {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
   }
-
   .list-group-item {
     border-radius: 10px;
     margin-bottom: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     transition: box-shadow 0.2s;
   }
-
   .list-group-item:hover {
     box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  }
+  .buscador-solo {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 600px) {
+    .buscador-solo {
+      justify-content: center;
+    }
   }
 </style>
 
 <h2 class="mb-4">📝 Lista de Tareas</h2>
 
-<!-- Filtros y búsqueda -->
-<div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
-  <div class="btn-group mb-2">
-    <a href="{% url 'lista_tareas' %}" class="btn btn-outline-secondary btn-sm {% if not estado %}active{% endif %}">Todas</a>
-    <a href="?estado=pendiente&buscar={{ buscar }}" class="btn btn-outline-warning btn-sm {% if estado == 'pendiente' %}active{% endif %}">Pendientes</a>
-    <a href="?estado=completada&buscar={{ buscar }}" class="btn btn-outline-success btn-sm {% if estado == 'completada' %}active{% endif %}">Completadas</a>
-  </div>
-
-  <form method="get" class="d-flex align-items-center mb-2" style="max-width: 350px;">
+<!-- Solo el buscador -->
+<div class="buscador-solo">
+  <form method="get" class="d-flex align-items-center" style="max-width: 350px;">
     <input type="hidden" name="estado" value="{{ estado }}">
     <input type="text" name="buscar" placeholder="Buscar tarea..." value="{{ buscar }}" class="form-control form-control-sm me-2">
     <button class="btn btn-sm btn-outline-secondary" type="submit">🔍 Buscar</button>
@@ -61,7 +61,6 @@
     <li class="list-group-item d-flex justify-content-between align-items-center">
       <div>
         <strong>{{ tarea.titulo }}</strong>
-
         {% if tarea.prioridad == 'alta' %}
           <span class="badge bg-danger ms-2">🔴 Alta</span>
         {% elif tarea.prioridad == 'media' %}
@@ -69,19 +68,16 @@
         {% elif tarea.prioridad == 'baja' %}
           <span class="badge bg-secondary ms-2">🟢 Baja</span>
         {% endif %}
-
         {% if tarea.fecha_vencimiento %}
           <small class="text-muted ms-2">📅 Vence: {{ tarea.fecha_vencimiento }}</small>
         {% endif %}
         <br>
-
         {% if tarea.completada %}
           <span class="badge bg-success">Completada</span>
         {% else %}
           <span class="badge bg-warning text-dark">Pendiente</span>
         {% endif %}
       </div>
-
       <div class="tarea-btn-group">
         {% if tarea.completada %}
           <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-outline-success btn-sm tarea-btn">🔄 Pendiente</a>
@@ -90,14 +86,12 @@
         {% endif %}
         <a href="{% url 'ver_tarea' tarea.id %}" class="btn btn-outline-info btn-sm tarea-btn">👁 Ver</a>
         <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-outline-primary btn-sm tarea-btn">✏️ Editar</a>
-
         <!-- Botón para abrir el modal -->
         <button type="button" class="btn btn-outline-danger btn-sm tarea-btn" data-bs-toggle="modal" data-bs-target="#confirmarModal{{ tarea.id }}">
           🗑 Eliminar
         </button>
       </div>
     </li>
-
     <!-- Modal de confirmación -->
     <div class="modal fade" id="confirmarModal{{ tarea.id }}" tabindex="-1" aria-labelledby="modalLabel{{ tarea.id }}" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
