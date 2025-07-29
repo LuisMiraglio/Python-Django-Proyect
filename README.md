@@ -18,11 +18,10 @@
 
 ## 🖥️ Capturas de pantalla
 
-<p align="center">
-  <img src="docs/login.PNG" width="320" alt="Login moderno"/>
-  <img src="docs/lista_tareas.PNG" width="320" alt="Lista de tareas"/>
-  <img src="docs/registro.PNG" width="320" alt="Registro de usuario"/>
-</p>
+![Login moderno](docs/login.PNG)  
+![Lista de tareas](docs/lista_tareas.PNG)  
+![Registro de usuario](docs/registro.PNG)
+
 
 ---
 
@@ -30,7 +29,7 @@
 
 1. **Cloná el repositorio**
    ```bash
-   git clone https://github.com/tu-usuario/Python-Django-Proyect.git
+   git clone https://github.com/LuisMiraglio/Python-Django-Proyect.git
    cd Python-Django-Proyect
 
 2. **Crear un entorno virtual (opcional pero recomendado)**
@@ -62,6 +61,7 @@
    http://127.0.0.1:8000/
    
 🛠️ Tecnologías utilizadas
+
 Python 3
 
 Django
