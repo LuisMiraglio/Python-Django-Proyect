@@ -18,54 +18,65 @@
 
 ## 🖥️ Capturas de pantalla
 
-![Login moderno](docs/login.png)
-![Lista de tareas](docs/lista_tareas.png)
-![Registro de usuario](docs/registro.png)
+<p align="center">
+  <img src="docs/login.PNG" width="320" alt="Login moderno"/>
+  <img src="docs/lista_tareas.PNG" width="320" alt="Lista de tareas"/>
+  <img src="docs/registro.PNG" width="320" alt="Registro de usuario"/>
+</p>
 
-*Las imágenes son de ejemplo, podés agregar las tuyas en la carpeta `docs/`.*
+---
 
 ## ⚙️ Instalación y ejecución
 
 1. **Cloná el repositorio**
-   git clone https://github.com/LuisMiraglio/Python-Django-Proyect.git
+   ```bash
+   git clone https://github.com/tu-usuario/Python-Django-Proyect.git
    cd Python-Django-Proyect
 
 2. **Crear un entorno virtual (opcional pero recomendado)**
-    python -m venv env
+   ```bash
+   python -m venv env
 
-3. **Activar el entorno virtual:**
-    env\Scripts\activate
+3. **Activar el entorno virtual**
+   ```bash
+   .\env\Scripts\Activate.ps1
 
-4. **Instalar las dependencias:**
-    pip install -r requirements.txt
+4. **Instalar las dependencias**
+   ```bash
+   pip install -r requirements.txt
 
-5. **Aplicar migraciones de base de datos**
-    python manage.py migrate
+5. **Aplicar migraciones de base de dato**
+   ```bash
+   python manage.py migrate
 
 6. **(Opcional) Crear un usuario administrador**
-    python manage.py createsuperuser
+   ```bash
+   python manage.py createsuperuser
 
 7. **Iniciar el servidor**
-    python manage.py runserver
+   ```bash
+   python manage.py runserver
 
 8. **Entrar a la aplicación**
-    Abre tu navegador en http://127.0.0.1:8000/
+   ```bash
+   http://127.0.0.1:8000/
+   
+🛠️ Tecnologías utilizadas
+Python 3
 
-## 🚀 Tecnologías Utilizadas
-- Django
+Django
 
-- Bootstrap 5
+Bootstrap 5
 
-- HTML, CSS, JavaScript
+HTML5, CSS3, JavaScript
 
+🤝 Contribuciones
+Si querés contribuir con mejoras o nuevas funcionalidades, podés abrir un pull request o issue en GitHub.
 
-## 👨‍💻 Autor
+📄 Licencia
+Este proyecto está bajo la licencia MIT. Revisá el archivo LICENSE para más detalles.
 
-- [Luis Miraglio](https://github.com/LuisMiraglio)
+¡Gracias por usar TaskFlow! 🙌
 
-
-## 📝 Licencia
-
-Este proyecto está bajo la licencia MIT. Ver el archivo [LICENSE](LICENSE) para más información.
 
 
