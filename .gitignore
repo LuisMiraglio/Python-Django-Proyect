@@ -1,20 +1,20 @@
-# Entorno virtual
+# entornos virtuales
+.venv/
+venv/
 env/
 
-# Archivos de Python compilados
+# python
 __pycache__/
-*.py[cod]
-*$py.class
+*.pyc
 
-# Archivos de sistema
-.DS_Store
-Thumbs.db
-
-# Configuración de VS Code
-.vscode/
-
-# Base de datos SQLite
+# django
 db.sqlite3
+staticfiles/
+media/
 
-# Variables de entorno
+# secretos
 .env
+
+# editor
+.vscode/
+.idea/
