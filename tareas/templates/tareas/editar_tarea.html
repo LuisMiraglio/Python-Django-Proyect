@@ -4,13 +4,16 @@
 {% block title %}Editar Tarea{% endblock %}
 
 {% block content %}
-  <h2 class="mb-4">Editar tarea: {{ tarea.titulo }}</h2>
+<section class="page-card p-3 p-md-4">
+  <div class="page-header">
+    <h2 class="page-title">Editar tarea: {{ tarea.titulo }}</h2>
+  </div>
 
   <form method="post">
     {% csrf_token %}
 
     <div class="row">
-      <div class="col-md-6 mb-3">
+      <div class="col-md-7 mb-3">
         <label for="id_titulo" class="form-label">Título</label>
         {{ form.titulo|add_class:"form-control" }}
       </div>
@@ -32,7 +35,10 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-primary">Guardar cambios</button>
-    <a href="{% url 'lista_tareas' %}" class="btn btn-secondary">Cancelar</a>
+    <div class="d-flex flex-wrap gap-2 mt-2">
+      <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      <a href="{% url 'lista_tareas' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
   </form>
+</section>
 {% endblock %}
