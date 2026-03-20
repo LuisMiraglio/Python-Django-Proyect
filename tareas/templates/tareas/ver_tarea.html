@@ -1,99 +1,53 @@
 {% extends 'tareas/base.html' %}
-{% load static %}
 
-{% block title %}Detalle de la Asistencia{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/tareas.css' %}">
-{% endblock %}
+{% block title %}Detalle de la Tarea{% endblock %}
 
 {% block content %}
-
-<div class="tarea-form">
-
-  <!-- Header -->
-  <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
-    <div>
-      <h2 class="mb-1 fw-semibold">Detalle de la asistencia</h2>
-      <p class="text-muted mb-0">Revisá la información registrada del cliente.</p>
-    </div>
-
-    <div class="d-flex gap-2">
-      <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-outline-primary">
-        ✏️ Editar
-      </a>
-      <a href="{% url 'lista_tareas' %}" class="btn btn-outline-secondary">
-        ⬅ Volver
-      </a>
-    </div>
+<section class="page-card p-3 p-md-4">
+  <div class="page-header">
+    <h2 class="page-title">📝 Detalle de la Tarea</h2>
   </div>
 
-  <hr class="my-4">
-
-  <!-- GRID DETALLE -->
-  <div class="detail-grid">
-
-    <!-- Título -->
-    <div class="detail-item">
-      <span class="detail-label">Cliente / Título</span>
-      <div class="detail-value fw-semibold fs-5">
-        {{ tarea.titulo }}
-      </div>
+  <div class="card border-0 bg-transparent">
+    <div class="card-header page-card d-flex align-items-center">
+      <strong>{{ tarea.titulo }}</strong>
     </div>
-
-    <!-- Prioridad -->
-    <div class="detail-item">
-      <span class="detail-label">Prioridad</span>
-      <div class="detail-value">
-        {% if tarea.prioridad == 'alta' %}
-          <span class="badge bg-danger">🔴 Alta</span>
-        {% elif tarea.prioridad == 'media' %}
-          <span class="badge bg-primary">🟡 Media</span>
-        {% else %}
-          <span class="badge bg-secondary">🟢 Baja</span>
+    <div class="card-body px-0 pb-0 pt-3">
+      <ul class="list-group list-group-flush rounded overflow-hidden">
+        {% if tarea.fecha_vencimiento %}
+          <li class="list-group-item bg-transparent text-light border-secondary-subtle">
+            <strong>📅 Fecha de vencimiento:</strong> {{ tarea.fecha_vencimiento }}
+          </li>
         {% endif %}
-      </div>
-    </div>
 
-    <!-- Fecha y Hora -->
-    {% if tarea.fecha_vencimiento %}
-      <div class="detail-item">
-        <span class="detail-label">Fecha y hora de la asistencia</span>
-        <div class="detail-value fw-semibold">
-          📅 {{ tarea.fecha_vencimiento|date:"d/m/Y H:i" }}
-        </div>
-      </div>
-    {% endif %}
+        <li class="list-group-item bg-transparent text-light border-secondary-subtle">
+          <strong>📌 Prioridad:</strong>
+          {% if tarea.prioridad == 'alta' %}
+            <span class="badge bg-danger text-uppercase">Alta</span>
+          {% elif tarea.prioridad == 'media' %}
+            <span class="badge bg-warning text-dark text-uppercase">Media</span>
+          {% else %}
+            <span class="badge bg-secondary text-uppercase">Baja</span>
+          {% endif %}
+        </li>
 
-    <!-- Estado -->
-    <div class="detail-item">
-      <span class="detail-label">Estado</span>
-      <div class="detail-value">
-        {% if tarea.completada %}
-          <span class="badge bg-success">✅ Completada</span>
-        {% else %}
-          <span class="badge bg-warning text-dark">⏳ Pendiente</span>
-        {% endif %}
-      </div>
-    </div>
+        <li class="list-group-item bg-transparent text-light border-secondary-subtle">
+          <strong>✅ Estado:</strong>
+          {% if tarea.completada %}
+            <span class="text-success">Completada</span>
+          {% else %}
+            <span class="text-warning">Pendiente</span>
+          {% endif %}
+        </li>
 
-  </div>
+        <li class="list-group-item bg-transparent text-light border-secondary-subtle">
+          <strong>📝 Descripción:</strong><br>
+          {{ tarea.descripcion|linebreaks }}
+        </li>
+      </ul>
 
-  <hr class="detail-divider">
-
-  <!-- DESCRIPCIÓN -->
-  <div class="detail-description">
-    <span class="detail-label">Detalle de la asistencia</span>
-
-    <div class="description-box">
-      {% if tarea.descripcion %}
-        {{ tarea.descripcion|linebreaks }}
-      {% else %}
-        <span class="text-muted">No se agregó información adicional.</span>
-      {% endif %}
+      <a href="{% url 'lista_tareas' %}" class="btn btn-secondary mt-4">⬅ Volver a la lista</a>
     </div>
   </div>
-
-</div>
-
+</section>
 {% endblock %}

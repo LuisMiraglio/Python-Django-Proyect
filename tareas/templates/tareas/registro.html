@@ -1,48 +1,39 @@
 {% extends 'tareas/base.html' %}
-{% load static %}
-{% load form_tags %}
-
+{% block body_class %}bg-degrade{% endblock %}
+{% load widget_tweaks %}
 {% block title %}Registro{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/auth.css' %}">
-{% endblock %}
-
 {% block content %}
-<div class="login-container">
-  <div class="login-wrapper">
-
-    <!-- Form -->
-    <div class="auth-form">
-      <h2>📝 Crear cuenta</h2>
-
+<div class="auth-shell">
+  <div class="auth-card" style="max-width: 440px;">
+    <div class="auth-form p-4 p-md-5">
+      <h3 class="page-title mb-4 text-center">📝 Crear una cuenta</h3>
       <form method="post" novalidate>
         {% csrf_token %}
         {{ form.non_field_errors }}
 
-        <input type="text" name="username" placeholder="Usuario" required
-               value="{{ form.username.value|default_if_none:'' }}">
-
-        <input type="email" name="email" placeholder="Email" required
-               value="{{ form.email.value|default_if_none:'' }}">
-
-        <input type="password" name="password1" placeholder="Contraseña" required>
-        <input type="password" name="password2" placeholder="Confirmar contraseña" required>
-
-        <button type="submit" class="btn btn-primary">Registrarme</button>
+        <div class="mb-3">
+          <label for="{{ form.username.id_for_label }}" class="form-label">Usuario</label>
+          {{ form.username|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+          {{ form.email|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.password1.id_for_label }}" class="form-label">Contraseña</label>
+          {{ form.password1|add_class:"form-control" }}
+        </div>
+        <div class="mb-3">
+          <label for="{{ form.password2.id_for_label }}" class="form-label">Confirmar contraseña</label>
+          {{ form.password2|add_class:"form-control" }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Registrarme</button>
       </form>
-
-      <div class="auth-footer">
-        <small>¿Ya tenés cuenta? <a href="{% url 'login' %}">Iniciar sesión</a></small>
+      <div class="registro-footer text-center mt-4">
+        <small class="muted-text">¿Ya tenés cuenta? <a href="{% url 'login' %}">Iniciar sesión</a></small>
       </div>
     </div>
-
-    <!-- Panel derecho -->
-    <div class="panel-container">
-      <h2>TaskFlow 🚀</h2>
-      <p>Registrate y empezá a organizar tus tareas en minutos.</p>
-    </div>
-
   </div>
 </div>
 {% endblock %}

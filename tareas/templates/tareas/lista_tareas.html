@@ -1,179 +1,109 @@
 {% extends 'tareas/base.html' %}
-{% load static %}
 
-{% block title %}Lista de Asistencias{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/tareas.css' %}">
-{% endblock %}
+{% block title %}Lista de Tareas{% endblock %}
 
 {% block content %}
-
-<div class="page">
-
-  <div class="page-header">
-    <div class="page-title">
-      <h2 class="mb-0">📋 Lista de Asistencias</h2>
+<section class="page-card p-3 p-md-4">
+  <div class="page-header flex-wrap">
+    <div>
+      <h2 class="page-title">📝 Lista de Tareas</h2>
+      <small class="muted-text">Gestioná y revisá el estado de tus tareas.</small>
     </div>
-
-    <form method="get" class="buscador-form">
+    <form method="get" class="d-flex align-items-center gap-2" style="max-width: 360px; width: 100%;">
       <input type="hidden" name="estado" value="{{ estado }}">
-
-      <div class="input-group input-group-sm">
-        <input type="text"
-               name="buscar"
-               placeholder="Buscar asistencia..."
-               value="{{ buscar }}"
-               class="form-control">
-
-        <button class="btn btn-primary btn-search" type="submit">
-          🔍
-        </button>
-      </div>
+      <input type="text" name="buscar" placeholder="Buscar tarea..." value="{{ buscar }}" class="form-control form-control-sm">
+      <button class="btn btn-sm btn-outline-secondary" type="submit">🔍</button>
     </form>
   </div>
 
-  <!-- LISTA -->
-  <ul class="list-group task-list">
+  <div class="tarea-list">
     {% for tarea in tareas %}
-      <li class="list-group-item task-item d-flex justify-content-between align-items-center">
-        <div class="task-info">
-          <div class="task-title">
-            <strong>{{ tarea.titulo }}</strong>
-
+      <article class="tarea-item d-flex flex-column flex-lg-row justify-content-between gap-3">
+        <div>
+          <strong class="d-block">{{ tarea.titulo }}</strong>
+          <div class="tarea-meta">
             {% if tarea.prioridad == 'alta' %}
-              <span class="badge bg-danger ms-2">🔴 Alta</span>
+              <span class="badge bg-danger badge-soft">🔴 Alta</span>
             {% elif tarea.prioridad == 'media' %}
-              <span class="badge bg-primary ms-2">🟡 Media</span>
+              <span class="badge bg-primary badge-soft">🟡 Media</span>
             {% elif tarea.prioridad == 'baja' %}
-              <span class="badge bg-secondary ms-2">🟢 Baja</span>
-            {% endif %}
-          </div>
-
-          <div class="task-meta">
-            {% if tarea.fecha_vencimiento %}
-              <small class="text-muted">
-                📅 Asistencia: {{ tarea.fecha_vencimiento|date:"d/m/Y H:i" }}
-              </small>
+              <span class="badge bg-secondary badge-soft">🟢 Baja</span>
             {% endif %}
 
             {% if tarea.completada %}
-              <span class="badge bg-success ms-2">Completada</span>
+              <span class="badge bg-success badge-soft">Completada</span>
             {% else %}
-              <span class="badge bg-warning text-dark ms-2">Pendiente</span>
+              <span class="badge bg-warning text-dark badge-soft">Pendiente</span>
+            {% endif %}
+
+            {% if tarea.fecha_vencimiento %}
+              <small class="muted-text">📅 Vence: {{ tarea.fecha_vencimiento }}</small>
             {% endif %}
           </div>
         </div>
 
         <div class="tarea-btn-group">
           {% if tarea.completada %}
-            <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-outline-success btn-sm tarea-btn">
-              🔄 Pendiente
-            </a>
+            <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-outline-success btn-sm tarea-btn">🔄 Pendiente</a>
           {% else %}
-            <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-outline-success btn-sm tarea-btn">
-              ✔ Completar
-            </a>
+            <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-outline-success btn-sm tarea-btn">✔ Completar</a>
           {% endif %}
-
-          <a href="{% url 'ver_tarea' tarea.id %}" class="btn btn-outline-info btn-sm tarea-btn">
-            👁 Ver
-          </a>
-
-          <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-outline-primary btn-sm tarea-btn">
-            ✏️ Editar
-          </a>
-
-          <button type="button"
-                  class="btn btn-outline-danger btn-sm tarea-btn"
-                  data-bs-toggle="modal"
-                  data-bs-target="#confirmarModal{{ tarea.id }}">
+          <a href="{% url 'ver_tarea' tarea.id %}" class="btn btn-outline-info btn-sm tarea-btn">👁 Ver</a>
+          <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-outline-primary btn-sm tarea-btn">✏️ Editar</a>
+          <button type="button" class="btn btn-outline-danger btn-sm tarea-btn" data-bs-toggle="modal" data-bs-target="#confirmarModal{{ tarea.id }}">
             🗑 Eliminar
           </button>
         </div>
-      </li>
-    {% empty %}
-      <li class="list-group-item">No hay asistencias registradas aún.</li>
-    {% endfor %}
-  </ul>
+      </article>
 
-  <!-- MODALES (FUERA DEL UL) -->
-  {% for tarea in tareas %}
-    <div class="modal fade"
-         id="confirmarModal{{ tarea.id }}"
-         tabindex="-1"
-         aria-labelledby="modalLabel{{ tarea.id }}"
-         aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title" id="modalLabel{{ tarea.id }}">
-              Confirmar Eliminación
-            </h5>
-            <button type="button"
-                    class="btn-close btn-close-white"
-                    data-bs-dismiss="modal"
-                    aria-label="Cerrar"></button>
-          </div>
-          <div class="modal-body">
-            ¿Estás seguro de que querés eliminar la asistencia
-            "<strong>{{ tarea.titulo }}</strong>"?
-          </div>
-          <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-secondary btn-sm"
-                    data-bs-dismiss="modal">
-              Cancelar
-            </button>
-            <a href="{% url 'eliminar_tarea' tarea.id %}"
-               class="btn btn-danger btn-sm">
-              Sí, eliminar
-            </a>
+      <div class="modal fade" id="confirmarModal{{ tarea.id }}" tabindex="-1" aria-labelledby="modalLabel{{ tarea.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title" id="modalLabel{{ tarea.id }}">Confirmar Eliminación</h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body text-dark">
+              ¿Estás seguro de que querés eliminar la tarea "<strong>{{ tarea.titulo }}</strong>"?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+              <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-danger btn-sm">Sí, eliminar</a>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  {% endfor %}
+    {% empty %}
+      <div class="tarea-item">
+        <span class="muted-text">No hay tareas aún.</span>
+      </div>
+    {% endfor %}
+  </div>
 
   {% if page_obj.has_other_pages %}
-    <nav aria-label="Paginación de asistencias" class="mt-4">
-      <ul class="pagination justify-content-center">
+    <nav aria-label="Paginación de tareas" class="mt-4">
+      <ul class="pagination justify-content-center mb-0">
         {% if page_obj.has_previous %}
           <li class="page-item">
-            <a class="page-link"
-               href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ page_obj.previous_page_number }}">
-              &laquo;
-            </a>
+            <a class="page-link" href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ page_obj.previous_page_number }}">&laquo;</a>
           </li>
         {% endif %}
-
         {% for num in page_obj.paginator.page_range %}
           {% if page_obj.number == num %}
-            <li class="page-item active">
-              <span class="page-link">{{ num }}</span>
-            </li>
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
           {% else %}
             <li class="page-item">
-              <a class="page-link"
-                 href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ num }}">
-                {{ num }}
-              </a>
+              <a class="page-link" href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ num }}">{{ num }}</a>
             </li>
           {% endif %}
         {% endfor %}
-
         {% if page_obj.has_next %}
           <li class="page-item">
-            <a class="page-link"
-               href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ page_obj.next_page_number }}">
-              &raquo;
-            </a>
+            <a class="page-link" href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ page_obj.next_page_number }}">&raquo;</a>
           </li>
         {% endif %}
       </ul>
     </nav>
   {% endif %}
-
-</div>
-
+</section>
 {% endblock %}
