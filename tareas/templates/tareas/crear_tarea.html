@@ -1,12 +1,18 @@
-{% extends 'tareas/base.html' %}
+{% extends "tareas/base.html" %}
+{% load static %}
 {% load form_tags %}
 
 {% block title %}Crear Nueva Tarea{% endblock %}
 
-{% block content %}
-<h2 class="mb-4">Crear Nueva Tarea</h2>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/tareas.css' %}">
+{% endblock %}
 
-<form method="post">
+{% block content %}
+
+<h2 class="mb-4">➕ Crear Nueva Tarea</h2>
+
+<form method="post" class="tarea-form">
   {% csrf_token %}
 
   <div class="row">
@@ -33,7 +39,10 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-primary">Guardar</button>
-  <a href="{% url 'lista_tareas' %}" class="btn btn-secondary">Volver a la lista</a>
+  <div class="d-flex gap-2 flex-wrap">
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="{% url 'lista_tareas' %}" class="btn btn-secondary">Volver a la lista</a>
+  </div>
 </form>
+
 {% endblock %}

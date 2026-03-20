@@ -1,71 +1,48 @@
 {% extends 'tareas/base.html' %}
-{% block body_class %}bg-degrade{% endblock %}
-{% load widget_tweaks %}
+{% load static %}
+{% load form_tags %}
+
 {% block title %}Registro{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
 {% block content %}
-<style>
-  .registro-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-  }
-  .registro-card {
-    width: 100%;
-    max-width: 340px;   /* Más angosto que antes */
-    padding: 24px 18px; /* Menos padding para que entre mejor */
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.09);
-    background: #fff;
-  }
-  .registro-card h3 {
-    margin-bottom: 24px;
-    text-align: center;
-    font-weight: bold;
-  }
-  .registro-footer {
-    text-align: center;
-    margin-top: 16px;
-  }
-  .registro-footer a {
-    font-weight: bold;
-    color: #007bff;
-    text-decoration: none;
-  }
-  .registro-footer a:hover {
-    text-decoration: underline;
-  }
-</style>
+<div class="login-container">
+  <div class="login-wrapper">
 
-<div class="registro-container">
-  <div class="registro-card">
-    <h3>📝 Crear una cuenta</h3>
-    <form method="post" novalidate>
-      {% csrf_token %}
-      {{ form.non_field_errors }}
+    <!-- Form -->
+    <div class="auth-form">
+      <h2>📝 Crear cuenta</h2>
 
-      <div class="mb-2">
-        <label for="{{ form.username.id_for_label }}" class="form-label">Usuario</label>
-        {{ form.username|add_class:"form-control" }}
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <input type="text" name="username" placeholder="Usuario" required
+               value="{{ form.username.value|default_if_none:'' }}">
+
+        <input type="email" name="email" placeholder="Email" required
+               value="{{ form.email.value|default_if_none:'' }}">
+
+        <input type="password" name="password1" placeholder="Contraseña" required>
+        <input type="password" name="password2" placeholder="Confirmar contraseña" required>
+
+        <button type="submit" class="btn btn-primary">Registrarme</button>
+      </form>
+
+      <div class="auth-footer">
+        <small>¿Ya tenés cuenta? <a href="{% url 'login' %}">Iniciar sesión</a></small>
       </div>
-      <div class="mb-2">
-        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
-        {{ form.email|add_class:"form-control" }}
-      </div>
-      <div class="mb-2">
-        <label for="{{ form.password1.id_for_label }}" class="form-label">Contraseña</label>
-        {{ form.password1|add_class:"form-control" }}
-      </div>
-      <div class="mb-2">
-        <label for="{{ form.password2.id_for_label }}" class="form-label">Confirmar contraseña</label>
-        {{ form.password2|add_class:"form-control" }}
-      </div>
-      <button type="submit" class="btn btn-primary w-100">Registrarme</button>
-    </form>
-    <div class="registro-footer">
-      <small>¿Ya tenés cuenta? <a href="{% url 'login' %}">Iniciar sesión</a></small>
     </div>
+
+    <!-- Panel derecho -->
+    <div class="panel-container">
+      <h2>TaskFlow 🚀</h2>
+      <p>Registrate y empezá a organizar tus tareas en minutos.</p>
+    </div>
+
   </div>
 </div>
 {% endblock %}

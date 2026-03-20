@@ -3,93 +3,52 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}TaskFlow{% endblock %}</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="{% static 'img/notes.ico' %}">
+
+  <!-- Fuente -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      display: flex;
-      min-height: 100vh;
-      background: #f8f9fa;
-    }
-    .bg-degrade {
-      background: linear-gradient(120deg, #26394d 0%, #41587b 60%, #5a99e6 100%) !important;
-      min-height: 100vh;
-    }
-    .sidebar {
-      background-color: #343a40;
-      color: white;
-      min-width: 60px;
-      width: 60px;
-      transition: width 0.3s;
-      overflow-x: hidden;
-      padding-top: 1rem;
-    }
-    .sidebar:hover {
-      width: 200px;
-    }
-    .sidebar .nav-item {
-      display: flex;
-      align-items: center;
-      padding: 0.75rem 1rem;
-      white-space: nowrap;
-      text-decoration: none;
-      color: white;
-    }
-    .sidebar .nav-item:hover {
-      background-color: #495057;
-    }
-    .nav-label {
-      margin-left: 10px;
-      display: none;
-    }
-    .sidebar:hover .nav-label {
-      display: inline;
-    }
-    .content {
-      flex-grow: 1;
-      padding: 2rem;
-      background-color: transparent;
-      position: relative;
-    }
-    .nav-item.disabled {
-      cursor: default;
-      opacity: 0.7;
-    }
-    .nav-item.disabled:hover {
-      background-color: inherit;
-    }
-    #messages-container {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1050;
-      width: 90%;
-      max-width: 500px;
-    }
-    .fade-out {
-      opacity: 0;
-      transition: opacity 1s ease-out;
-    }
-  </style>
+
+  <!-- CSS Global -->
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+  <!-- CSS específico por página -->
+  {% block extra_css %}{% endblock %}
 </head>
-<body class="{% block body_class %}{% endblock %}">
 
-  <!-- Barra lateral -->
-  <div class="sidebar d-flex flex-column">
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar d-flex flex-column">
+
+    <button type="button"
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            aria-label="Abrir/cerrar menú">
+      ☰ <span class="nav-label">Menú</span>
+    </button>
+
     {% if user.is_authenticated %}
-      <a class="nav-item disabled">
+      <div class="nav-item disabled">
         👤<span class="nav-label">{{ user.username }}</span>
-      </a>
-    {% endif %}
+      </div>
 
-    {% if user.is_authenticated %}
       <a class="nav-item" href="{% url 'lista_tareas' %}">
         📋<span class="nav-label">Lista</span>
       </a>
+
       <a class="nav-item" href="{% url 'crear_tarea' %}">
         ➕<span class="nav-label">Nueva</span>
       </a>
+
       <a class="nav-item mt-auto" href="{% url 'logout' %}">
         🚪<span class="nav-label">Logout</span>
       </a>
@@ -98,33 +57,38 @@
         🔑<span class="nav-label">Login</span>
       </a>
     {% endif %}
-  </div>
+  </aside>
 
-  <!-- Contenido principal -->
-  <div class="content">
+  <!-- Main -->
+  <main class="content">
+
     {% if messages %}
       <div id="messages-container">
         {% for message in messages %}
-          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm rounded" role="alert">
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
           </div>
         {% endfor %}
       </div>
-      <script>
-        setTimeout(() => {
-          const alerts = document.querySelectorAll('#messages-container .alert');
-          alerts.forEach(alert => {
-            const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
-            bsAlert.close();
-          });
-        }, 4000);
-      </script>
     {% endif %}
 
     {% block content %}{% endblock %}
-  </div>
+
+  </main>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (function () {
+      const btn = document.getElementById("sidebarToggle");
+      if (!btn) return;
+
+      btn.addEventListener("click", function () {
+        document.body.classList.toggle("sidebar-collapsed");
+      });
+    })();
+  </script>
+
 </body>
 </html>

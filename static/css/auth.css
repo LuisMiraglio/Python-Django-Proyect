@@ -1,0 +1,148 @@
+/* ===============================
+   CENTRADO DEL LOGIN
+================================ */
+
+.login-page{
+  min-height: calc(100vh - 40px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* Contenedor general del login/registro */
+.login-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Tarjeta principal (dos columnas) */
+.login-wrapper{
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Lado formulario */
+.auth-form{
+  padding: 28px;
+  background: rgba(2,6,23,0.25);
+}
+
+.auth-form h2{
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+}
+
+.auth-form form{
+  display: grid;
+  gap: 12px;
+}
+
+/* Inputs */
+.auth-form input{
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 12px;
+  background: rgba(2,6,23,0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(229,231,235,0.92);
+  outline: none;
+}
+
+.auth-form input::placeholder{
+  color: rgba(229,231,235,0.55);
+}
+
+.auth-form input:focus{
+  border-color: rgba(99,102,241,0.55);
+  box-shadow: 0 0 0 .25rem rgba(99,102,241,0.20);
+}
+
+/* Footer */
+.auth-footer{
+  margin-top: 12px;
+  color: rgba(229,231,235,0.70);
+}
+
+.auth-footer a{
+  color: rgba(199,210,254,0.95);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.auth-footer a:hover{
+  text-decoration: underline;
+}
+
+/* Panel derecho */
+.panel-container{
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  background:
+    radial-gradient(900px 500px at 20% 15%, rgba(99,102,241,0.30), transparent 55%),
+    radial-gradient(800px 500px at 80% 40%, rgba(34,197,94,0.18), transparent 60%),
+    rgba(15,23,42,0.65);
+}
+
+.panel-container h2{
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.panel-container p{
+  margin: 0;
+  color: rgba(229,231,235,0.75);
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .login-wrapper{
+    grid-template-columns: 1fr;
+    border-radius: 18px;
+  }
+
+  .auth-form{
+    padding: 22px;
+  }
+
+  .panel-container{
+    display: none;
+  }
+}
+
+/* Extra: mobile chico */
+@media (max-width: 420px){
+  .login-page{
+    padding: 24px 14px;
+  }
+
+  .auth-form{
+    padding: 18px;
+  }
+
+  .auth-form h2{
+    margin-bottom: 14px;
+  }
+}
+
+/* Fallback si el navegador no soporta blur */
+@supports not ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))) {
+  .login-wrapper{
+    background: rgba(15,23,42,0.85);
+  }
+}

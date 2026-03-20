@@ -1,140 +1,72 @@
 {% extends 'tareas/base.html' %}
-{% block body_class %}bg-degrade{% endblock %}
+{% load static %}
+
 {% block title %}Iniciar Sesión{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
 {% block content %}
-<style>
-  .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-  }
 
-  .login-wrapper {
-    position: relative;
-    width: 800px;
-    height: 400px;
-    background: #fff;
-    display: flex;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    border-radius: 12px;
-  }
+<div class="login-page">
 
-  .form-container {
-    flex: 1;
-    padding: 40px;
-    background-color: #f9f9f9;
-  }
+  <div class="login-container">
+    <div class="login-wrapper">
 
-  .form-container h2 {
-    margin-bottom: 30px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+      <!-- Formulario -->
+      <div class="auth-form">
 
-  .form-container input {
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
+        <h2>🔐 Iniciar Sesión</h2>
 
-  .form-container button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    background-color: #007bff;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+        <form method="post">
+          {% csrf_token %}
 
-  .form-container button:hover {
-    background-color: #0056b3;
-  }
+          <input 
+            type="text"
+            name="username"
+            placeholder="Usuario"
+            required
+            autofocus
+          >
 
-  .panel-container {
-    flex: 1;
-    background: linear-gradient(135deg, #4b6cb7, #182848);
-    color: white;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+          <input 
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            required
+          >
 
-  .panel-container h2 {
-    font-weight: bold;
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-  }
+          <button type="submit" class="btn btn-primary w-100">
+            Iniciar sesión
+          </button>
 
-  .panel-container p {
-    font-size: 1rem;
-    max-width: 300px;
-    text-align: center;
-    line-height: 1.4;
-  }
+        </form>
 
-  .registro-footer {
-    text-align: center;
-    margin-top: 20px;
-  }
+        <div class="auth-footer">
+          <small>
+            ¿No tenés cuenta?
+            <a href="{% url 'registro' %}">Registrate</a>
+          </small>
+        </div>
 
-  .registro-footer a {
-    font-weight: bold;
-    color: #007bff;
-    text-decoration: none;
-  }
-
-  .registro-footer a:hover {
-    text-decoration: underline;
-  }
-
-  @media (max-width: 768px) {
-    .login-wrapper {
-      flex-direction: column;
-      height: auto;
-    }
-
-    .panel-container {
-      display: none;
-    }
-
-    .form-container {
-      padding: 30px 20px;
-    }
-  }
-</style>
-
-<div class="login-container">
-  <div class="login-wrapper">
-    <!-- Login form -->
-    <div class="form-container">
-      <h2>🔐 Iniciar Sesión</h2>
-      <form method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Usuario" required autofocus>
-        <input type="password" name="password" placeholder="Contraseña" required>
-        <button type="submit">Iniciar sesión</button>
-      </form>
-      <div class="registro-footer">
-        <small>¿No tenés cuenta? <a href="{% url 'registro' %}">Registrate</a></small>
       </div>
-    </div>
-    <!-- Panel derecho -->
-    <div class="panel-container">
-      <h2>Bienvenido a TaskFlow 🧠</h2>
-      <p>Gestioná tus tareas de forma simple, rápida y visual.</p>
+
+      <!-- Panel lateral -->
+      <div class="panel-container">
+
+        <h2>Bienvenido a TaskFlow 🧠</h2>
+
+        <p>
+          Gestioná tus tareas de forma simple,
+          rápida y visual.
+        </p>
+
+      </div>
+
     </div>
   </div>
+
 </div>
+
 {% endblock %}

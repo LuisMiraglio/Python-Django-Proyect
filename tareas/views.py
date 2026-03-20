@@ -97,7 +97,6 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            messages.success(request, 'Sesión iniciada correctamente.')
             return redirect('lista_tareas')
         else:
             messages.error(request, 'Usuario o contraseña incorrectos.')
@@ -107,7 +106,6 @@ def login_view(request):
 @login_required
 def logout_view(request):
     logout(request)
-    messages.info(request, 'Sesión cerrada correctamente.')
     return redirect('login')
 
 # ✅ Registro de nuevos usuarios

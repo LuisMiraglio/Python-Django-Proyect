@@ -12,7 +12,7 @@ class Tarea(models.Model):
     descripcion = models.TextField(blank=True)
     completada = models.BooleanField(default=False)
     creada = models.DateTimeField(auto_now_add=True)
-    fecha_vencimiento = models.DateField(null=True, blank=True)
+    fecha_vencimiento = models.DateTimeField(null=True, blank=True)
     prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES, default='media')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="tareas")
 

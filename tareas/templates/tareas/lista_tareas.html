@@ -1,149 +1,179 @@
 {% extends 'tareas/base.html' %}
+{% load static %}
 
-{% block title %}Lista de Tareas{% endblock %}
+{% block title %}Lista de Asistencias{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/tareas.css' %}">
+{% endblock %}
 
 {% block content %}
-<style>
-  .tarea-btn {
-    border-radius: 8px;
-    padding: 4px 8px;
-    margin-left: 4px;
-    transition: all 0.2s ease-in-out;
-    font-size: 0.85rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .tarea-btn:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
-  }
-  .tarea-btn-group {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-  .list-group-item {
-    border-radius: 10px;
-    margin-bottom: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-    transition: box-shadow 0.2s;
-  }
-  .list-group-item:hover {
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-  }
-  .buscador-solo {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 1.5rem;
-  }
-  @media (max-width: 600px) {
-    .buscador-solo {
-      justify-content: center;
-    }
-  }
-</style>
 
-<h2 class="mb-4">📝 Lista de Tareas</h2>
+<div class="page">
 
-<!-- Solo el buscador -->
-<div class="buscador-solo">
-  <form method="get" class="d-flex align-items-center" style="max-width: 350px;">
-    <input type="hidden" name="estado" value="{{ estado }}">
-    <input type="text" name="buscar" placeholder="Buscar tarea..." value="{{ buscar }}" class="form-control form-control-sm me-2">
-    <button class="btn btn-sm btn-outline-secondary" type="submit">🔍 Buscar</button>
-  </form>
-</div>
+  <div class="page-header">
+    <div class="page-title">
+      <h2 class="mb-0">📋 Lista de Asistencias</h2>
+    </div>
 
-<!-- Lista de tareas -->
-<ul class="list-group">
-  {% for tarea in tareas %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      <div>
-        <strong>{{ tarea.titulo }}</strong>
-        {% if tarea.prioridad == 'alta' %}
-          <span class="badge bg-danger ms-2">🔴 Alta</span>
-        {% elif tarea.prioridad == 'media' %}
-          <span class="badge bg-primary ms-2">🟡 Media</span>
-        {% elif tarea.prioridad == 'baja' %}
-          <span class="badge bg-secondary ms-2">🟢 Baja</span>
-        {% endif %}
-        {% if tarea.fecha_vencimiento %}
-          <small class="text-muted ms-2">📅 Vence: {{ tarea.fecha_vencimiento }}</small>
-        {% endif %}
-        <br>
-        {% if tarea.completada %}
-          <span class="badge bg-success">Completada</span>
-        {% else %}
-          <span class="badge bg-warning text-dark">Pendiente</span>
-        {% endif %}
-      </div>
-      <div class="tarea-btn-group">
-        {% if tarea.completada %}
-          <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-outline-success btn-sm tarea-btn">🔄 Pendiente</a>
-        {% else %}
-          <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-outline-success btn-sm tarea-btn">✔ Completar</a>
-        {% endif %}
-        <a href="{% url 'ver_tarea' tarea.id %}" class="btn btn-outline-info btn-sm tarea-btn">👁 Ver</a>
-        <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-outline-primary btn-sm tarea-btn">✏️ Editar</a>
-        <!-- Botón para abrir el modal -->
-        <button type="button" class="btn btn-outline-danger btn-sm tarea-btn" data-bs-toggle="modal" data-bs-target="#confirmarModal{{ tarea.id }}">
-          🗑 Eliminar
+    <form method="get" class="buscador-form">
+      <input type="hidden" name="estado" value="{{ estado }}">
+
+      <div class="input-group input-group-sm">
+        <input type="text"
+               name="buscar"
+               placeholder="Buscar asistencia..."
+               value="{{ buscar }}"
+               class="form-control">
+
+        <button class="btn btn-primary btn-search" type="submit">
+          🔍
         </button>
       </div>
-    </li>
-    <!-- Modal de confirmación -->
-    <div class="modal fade" id="confirmarModal{{ tarea.id }}" tabindex="-1" aria-labelledby="modalLabel{{ tarea.id }}" aria-hidden="true">
+    </form>
+  </div>
+
+  <!-- LISTA -->
+  <ul class="list-group task-list">
+    {% for tarea in tareas %}
+      <li class="list-group-item task-item d-flex justify-content-between align-items-center">
+        <div class="task-info">
+          <div class="task-title">
+            <strong>{{ tarea.titulo }}</strong>
+
+            {% if tarea.prioridad == 'alta' %}
+              <span class="badge bg-danger ms-2">🔴 Alta</span>
+            {% elif tarea.prioridad == 'media' %}
+              <span class="badge bg-primary ms-2">🟡 Media</span>
+            {% elif tarea.prioridad == 'baja' %}
+              <span class="badge bg-secondary ms-2">🟢 Baja</span>
+            {% endif %}
+          </div>
+
+          <div class="task-meta">
+            {% if tarea.fecha_vencimiento %}
+              <small class="text-muted">
+                📅 Asistencia: {{ tarea.fecha_vencimiento|date:"d/m/Y H:i" }}
+              </small>
+            {% endif %}
+
+            {% if tarea.completada %}
+              <span class="badge bg-success ms-2">Completada</span>
+            {% else %}
+              <span class="badge bg-warning text-dark ms-2">Pendiente</span>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="tarea-btn-group">
+          {% if tarea.completada %}
+            <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-outline-success btn-sm tarea-btn">
+              🔄 Pendiente
+            </a>
+          {% else %}
+            <a href="{% url 'cambiar_estado' tarea.id %}" class="btn btn-outline-success btn-sm tarea-btn">
+              ✔ Completar
+            </a>
+          {% endif %}
+
+          <a href="{% url 'ver_tarea' tarea.id %}" class="btn btn-outline-info btn-sm tarea-btn">
+            👁 Ver
+          </a>
+
+          <a href="{% url 'editar_tarea' tarea.id %}" class="btn btn-outline-primary btn-sm tarea-btn">
+            ✏️ Editar
+          </a>
+
+          <button type="button"
+                  class="btn btn-outline-danger btn-sm tarea-btn"
+                  data-bs-toggle="modal"
+                  data-bs-target="#confirmarModal{{ tarea.id }}">
+            🗑 Eliminar
+          </button>
+        </div>
+      </li>
+    {% empty %}
+      <li class="list-group-item">No hay asistencias registradas aún.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- MODALES (FUERA DEL UL) -->
+  {% for tarea in tareas %}
+    <div class="modal fade"
+         id="confirmarModal{{ tarea.id }}"
+         tabindex="-1"
+         aria-labelledby="modalLabel{{ tarea.id }}"
+         aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title" id="modalLabel{{ tarea.id }}">Confirmar Eliminación</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            <h5 class="modal-title" id="modalLabel{{ tarea.id }}">
+              Confirmar Eliminación
+            </h5>
+            <button type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal"
+                    aria-label="Cerrar"></button>
           </div>
           <div class="modal-body">
-            ¿Estás seguro de que querés eliminar la tarea "<strong>{{ tarea.titulo }}</strong>"?
+            ¿Estás seguro de que querés eliminar la asistencia
+            "<strong>{{ tarea.titulo }}</strong>"?
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
-            <a href="{% url 'eliminar_tarea' tarea.id %}" class="btn btn-danger btn-sm">Sí, eliminar</a>
+            <button type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <a href="{% url 'eliminar_tarea' tarea.id %}"
+               class="btn btn-danger btn-sm">
+              Sí, eliminar
+            </a>
           </div>
         </div>
       </div>
     </div>
-  {% empty %}
-    <li class="list-group-item">No hay tareas aún.</li>
   {% endfor %}
-</ul>
 
-<!-- Paginación -->
-{% if page_obj.has_other_pages %}
-  <nav aria-label="Paginación de tareas" class="mt-4">
-    <ul class="pagination justify-content-center">
-      {% if page_obj.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ page_obj.previous_page_number }}">
-            &laquo;
-          </a>
-        </li>
-      {% endif %}
-      {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-          <li class="page-item active"><span class="page-link">{{ num }}</span></li>
-        {% else %}
+  {% if page_obj.has_other_pages %}
+    <nav aria-label="Paginación de asistencias" class="mt-4">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
           <li class="page-item">
-            <a class="page-link" href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ num }}">{{ num }}</a>
+            <a class="page-link"
+               href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ page_obj.previous_page_number }}">
+              &laquo;
+            </a>
           </li>
         {% endif %}
-      {% endfor %}
-      {% if page_obj.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ page_obj.next_page_number }}">
-            &raquo;
-          </a>
-        </li>
-      {% endif %}
-    </ul>
-  </nav>
-{% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <li class="page-item active">
+              <span class="page-link">{{ num }}</span>
+            </li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link"
+                 href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ num }}">
+                {{ num }}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link"
+               href="?{% if estado %}estado={{ estado }}&{% endif %}{% if buscar %}buscar={{ buscar }}&{% endif %}page={{ page_obj.next_page_number }}">
+              &raquo;
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+
+</div>
 
 {% endblock %}
